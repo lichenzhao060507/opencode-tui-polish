@@ -366,6 +366,27 @@ function report(context: any, sessionID: string) {
  */
 const FORMAT_PATCH_KEY = Symbol.for("opencode.tui-polish.inline-usd")
 
+/**
+ * 历史版本用过的补丁 key。改名/合并后如果只认新 key，会在旧补丁外面再套一层，
+ * 同一个金额被补两次（footer 出现两个 ≈¥）。这里统一把它们关掉。
+ */
+const LEGACY_FORMAT_KEYS = [Symbol.for("opencode.cny-cost.inline")]
+
+function retireLegacyFormats() {
+  const proto: any = Intl.NumberFormat.prototype
+  for (const key of LEGACY_FORMAT_KEYS) {
+    const state = proto[key]
+    if (!state) continue
+    // 只清 context 不动原型链：旧 wrapper 仍会调用，但拿不到 context 就不再补后缀。
+    state.context = null
+    try {
+      delete proto[key]
+    } catch {
+      // 删不掉也无所谓，context 已经为空
+    }
+  }
+}
+
 function suffixFor(context: any, value: number) {
   const amount = Number(value)
   if (!Number.isFinite(amount) || amount <= 0) return ""
@@ -397,6 +418,10 @@ function suffixFor(context: any, value: number) {
 
 function installInlineFormat(context: any) {
   const proto: any = Intl.NumberFormat.prototype
+
+  // 先把改名前的旧补丁关掉，避免两层叠加。
+  retireLegacyFormats()
+
   const existing = proto[FORMAT_PATCH_KEY]
   if (existing) {
     existing.context = context
