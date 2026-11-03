@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "opencode-cny-cost",
+  "version": "1.1.0",
+  "description": "OpenCode TUI plugin: show the current DeepSeek session cost in CNY right after the built-in USD figure.",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js",
+    "./tui": "./dist/tui.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "index.ts",
+    "tui.ts",
+    "build.mjs"
+  ],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "tui",
+    "deepseek",
+    "cost",
+    "cny"
+  ],
+  "dependencies": {
+    "@opencode/plugin": "^2.2.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-typescript": "^7.27.1",
+    "babel-preset-solid": "^1.9.16"
+  }
+}
