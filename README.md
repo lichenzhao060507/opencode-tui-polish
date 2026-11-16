@@ -1,3 +1,5 @@
+**中文** | [English](README.en.md)
+
 # opencode-tui-polish
 
 给 OpenCode 原生 TUI 打的几个小补丁，不换皮肤、不换布局，只补两块信息。
